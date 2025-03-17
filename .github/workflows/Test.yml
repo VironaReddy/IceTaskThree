@@ -1,0 +1,33 @@
+name: c# Build and Syntax check
+
+on:
+  push:
+   branches: ["master"]#change to branch you pushed code too
+  pull_request:
+   branches: ["master"]
+
+jobs:
+ build:
+    runs-on: ubuntu-latest #uses a VM runner
+
+    steps:
+    - name: CHeckout Code #clones repo
+      uses: actions/checkout@v4
+
+      #sdk.net
+    - name: Setup SDK
+      uses: actions/setup-dotnet@v4
+      with:
+          dotnet-version: '9.0' #Change to framework used
+
+          #Restore dependancies
+    - name: Restore Dependancies
+      run: dotnet restore
+      
+      #Run Unit Tests
+    - name: Unit Tests
+      run: dotnet test
+
+      #build
+    - name: Build
+      run: dotnet build --configuration Release
